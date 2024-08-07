@@ -196,7 +196,7 @@ export default function App() {
               className="h-14 w-14 cursor-pointer"
             />
             <span className="text-white text-2xl font-bold font-mono text-nowrap">
-              <span className="text-3xl font-extrabold">M</span>eme3
+              <span className="text-3xl font-extrabold">O</span>nChain meme
             </span>
           </div>
         </div>
@@ -413,14 +413,15 @@ export default function App() {
                 color="bg-[#2952E3]"
                 title="Create Your Meme"
                 icon={
-                  <BsShieldFillCheck fontSize={21} className="text-white" />
+                  <BiSearchAlt fontSize={21} className="text-white" />
+                  
                 }
                 subtitle="Design your next viral meme with our intuitive creation tool, where every idea can become a masterpiece."
               />
               <ServiceCard
                 color="bg-[#8945F8]"
                 title="Mint Your Meme"
-                icon={<BiSearchAlt fontSize={21} className="text-white" />}
+                icon={<BsShieldFillCheck fontSize={21} className="text-white" />}
                 subtitle="Transform your meme into a unique, collectible NFT with just a few clicks, ensuring authenticity and ownership."
               />
               <ServiceCard
@@ -446,7 +447,7 @@ export default function App() {
                 className="h-14 w-14 cursor-pointer"
               />
               <span className="text-white text-2xl font-bold font-mono text-nowrap">
-                <span className="text-3xl font-extrabold">M</span>eme3
+                <span className="text-3xl font-extrabold">O</span>nChain meme
               </span>
             </div>
           </div>
