@@ -45,6 +45,8 @@ export default function App() {
   const [amount, setAmount] = useState(1);
   const [userCollection, setUserCollection] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
+  const [fileUrl, setFileUrl] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const uploadImageToPinata = async (file) => {
     const url = "https://api.pinata.cloud/pinning/pinFileToIPFS";
@@ -89,6 +91,49 @@ export default function App() {
       }
     }
   };
+
+  const uploadFileToPinata = async (file) => {
+    const url = "https://api.pinata.cloud/pinning/pinFileToIPFS";
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      setLoading(true);
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          pinata_api_key: "b670445db8b318a6e492",
+          pinata_secret_api_key: "7d343880e219ccc78e44c8c8ffd43d62a5fc250d087a809a8f2123aac91c9aed",
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+      if (result.IpfsHash) {
+        const fileUrl = `https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`;
+        setLoading(false);
+        setCommunity(fileUrl);
+        setFileUrl(fileUrl);
+        return fileUrl;
+      } else {
+        setLoading(false);
+        throw new Error("Failed to upload file to Pinata");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Error uploading file to Pinata:", error);
+    }
+  };
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const url = await uploadFileToPinata(file);
+      console.log("File URL:", url);
+    }
+  };
+
+
   // const handleFileChange = async(event) => {
   //   const file = event.target.files[0];
   //   const url = "https://api.pinata.cloud/pinning/pinFileToIPFS";
@@ -131,6 +176,7 @@ export default function App() {
       media === undefined ||
       amount === undefined
     ) {
+      toast.error("Please fill all the fields");
       console.log("Please fill all the fields");
       return;
     }
@@ -271,41 +317,62 @@ export default function App() {
           </div>
           <div className="w-96 white-glassmorphism flex flex-col justify-center items-center gap-3 px-3 py-10 mt-5 lg:mt-0">
             {user ? (
-              <p className="text-white text-2xl mb-3">
+              <p className="text-white text-2xl mb-2">
                 {user.slice(0, 4) + "..." + user.slice(-4)}
               </p>
             ) : (
-              <p className="text-white text-2xl mb-3">Connect Wallet</p>
+              <p className="text-white text-2xl mb-2">Connect Wallet</p>
             )}
+            <label htmlFor="image" className="text-white mr-auto ml-6">Choose meme image :</label>
             <input
               type="file"
               accept="image/*"
+              id="image"
+              disabled={loading}
               className="file-input file-input-bordered bg-transparent w-full max-w-xs"
               onChange={handleFileChange}
             />
+            <label htmlFor="file" className="text-white mr-auto ml-6">Music for meme :</label>
+            <input
+              type="file"
+              accept="audio/*"
+              id="file"
+              disabled={loading}
+              placeholder="Community"
+              onChange={handleFileUpload}
+              className="file-input file-input-bordered bg-transparent w-full max-w-xs"
+            />
             <input
               type="text"
-              placeholder="Contract Name"
+              placeholder="Meme Name"
+              disabled={loading}
               className="input input-bordered w-full max-w-xs bg-transparent"
               value={contractName}
               onChange={(e) => setContractName(e.target.value)}
             />
             <input
               type="text"
-              placeholder="Token Symbol"
+              placeholder="Description"
+              disabled={loading}
               value={tokenSymbol}
               onChange={(e) => setTokenSymbol(e.target.value)}
               className="input input-bordered w-full max-w-xs bg-transparent"
             />
-            <input
-              type="text"
-              placeholder="Community"
-              value={community}
-              onChange={(e) => setCommunity(e.target.value)}
-              className="input input-bordered w-full max-w-xs bg-transparent"
-            />
+            
 
             {media && <img src={media} alt="NFT Preview" width="100" />}
+            {fileUrl && (
+        <div>
+          {/* <p>File uploaded successfully. Access it <a href={fileUrl} target="_blank" rel="noopener noreferrer">here</a>.</p> */}
+          {fileUrl && (
+            <audio controls>
+            <source src={fileUrl} type="audio/ogg" />
+            <source src={fileUrl} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          )}
+        </div>
+      )}
             <button
               className="btn rounded-full bg-[#2952E3] text-white w-[80%] mt-4 disabled:bg-gray-900"
               onClick={handleMint}
@@ -343,22 +410,29 @@ export default function App() {
                   alt="NFT"
                   className="w-64 h-64 rounded shadow-lg"
                 />
-            <div className="w-full flex items-center justify-start flex-col gap-3 mt-2">
-                <div className=" flex flex-col gap-2 justify-start items-start">
+            <div className="w-full flex items-start justify-start flex-col gap-3 mt-2">
+                <div className=" flex  gap-2 justify-start items-start flex-col">
+
                   <div className="flex justify-start">
-                    <p className="font-bold">Contract Name:</p>
+                    <p className="font-bold text-white mr-2">Meme Name:</p>
                     <p>{contractName}</p>
                   </div>
                   <div className="flex justify-start">
-                    <p className="font-bold">Token symbol:</p>
+                    <p className="font-bold text-white mr-2">Description:</p>
                     <p>{userCollection.tokenSymbols[index]}</p>
                   </div>
-                  <div className="flex justify-start">
+
+                 
+
+                  
+                  {/* <div className="flex justify-start">
                     <p className="font-bold">Community:</p>
                     <p>{userCollection.communities[index]}</p>
-                  </div>
+                  </div> */}
                 </div>
-                <div className="flex justify-center items-center gap-4">
+                
+            </div>
+            <div className="flex justify-start gap-4 my-3">
                   <button onClick={
                     () => {
                       const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(userCollection.medias[index])}&text=${encodeURIComponent(contractName)}`;
@@ -377,7 +451,11 @@ export default function App() {
                     <FaFacebook className="text-white w-10 h-10 hover:text-blue-600"/>
                   </button>
                 </div>
-            </div>
+            <audio controls>
+            <source src={userCollection.communities[index]} type="audio/ogg" />
+            <source src={userCollection.communities[index]} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
               </div>
             ))}
           </div>
