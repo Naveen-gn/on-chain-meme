@@ -5,15 +5,7 @@ import { defineChain } from '../../node_modules/viem/utils/chain/defineChain.ts'
 import {ConnectButton,getDefaultConfig,RainbowKitProvider,} from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-  xdcTestnet,
-  zora,
-  polygonMumbai,
-  sepolia,
+  polygonAmoy,
   coreDao
 
 } from 'wagmi/chains';
@@ -47,7 +39,7 @@ export const tCore = /*#__PURE__*/ defineChain({
 export const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: 'YOUR_PROJECT_ID',
-  chains: [coreDao,sepolia,tCore],
+  chains: [coreDao,polygonAmoy,tCore],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 const queryClient = new QueryClient();

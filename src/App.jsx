@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MetaMask from "./assets/MetaMask.png";
+import Logo from "./assets/Logo.png";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { BsShieldFillCheck } from "react-icons/bs";
@@ -237,8 +237,8 @@ export default function App() {
         <div className="md:flex-[0.5] justify-center items-center">
           <div className="flex gap-4 items-center mr-5">
             <img
-              src={MetaMask}
-              alt="MetaMask logo"
+              src={Logo}
+              alt="Logo logo"
               className="h-14 w-14 cursor-pointer"
             />
             <span className="text-white text-2xl font-bold font-mono text-nowrap">
@@ -464,7 +464,7 @@ export default function App() {
         )}
 
         {/* <div className="w-80 h-96  white-glassmorphism flex justify-center items-center flex-col gap-3">
-          <img src={MetaMask} alt="" className="w-64 h-64" />
+          <img src={Logo} alt="" className="w-64 h-64" />
           <div>
             <p>Contract Name:</p>
             <p>Community:</p>
@@ -520,8 +520,8 @@ export default function App() {
           <div className="flex flex-[0.5] justify-center items-center">
             <div className="flex gap-4 items-center mr-5">
               <img
-                src={MetaMask}
-                alt="MetaMask logo"
+                src={Logo}
+                alt="Logo logo"
                 className="h-14 w-14 cursor-pointer"
               />
               <span className="text-white text-2xl font-bold font-mono text-nowrap">
