@@ -6,6 +6,8 @@ import { BsShieldFillCheck } from "react-icons/bs";
 import { BiSearchAlt } from "react-icons/bi";
 import { RiHeart2Fill } from "react-icons/ri";
 import { useAccount } from "wagmi";
+import { getAccount } from '@wagmi/core'
+
 import Button, { config } from "./Components/Button.jsx";
 import {
   MINTNFT,
@@ -33,10 +35,8 @@ export default function App() {
   const commonStyles =
     "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-white";
   const [toggleMenu, setToggleMenu] = useState(false);
-  const account = useAccount({
-    config,
-  });
-  const user = account.address;
+  
+//  const [user, setUser] = useState(null);
   const [contractName, setContractName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
   const [community, setCommunity] = useState("");
@@ -47,6 +47,24 @@ export default function App() {
   const [imageUrl, setImageUrl] = useState("");
   const [fileUrl, setFileUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const account = useAccount({
+    config,
+  });
+  // const account = getAccount(config);
+  const user = account.address;
+  console.log("User:", user);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+      
+  //   }, 2000); // 10000 milliseconds = 10 seconds
+  
+  //   return () => clearInterval(intervalId); // Cleanup function to clear the interval
+  // },[])
+  useEffect(() => {
+    console.log("User:", user);
+    
+  },[user])
 
   const uploadImageToPinata = async (file) => {
     const url = "https://api.pinata.cloud/pinning/pinFileToIPFS";
@@ -201,16 +219,37 @@ export default function App() {
     setLoading(false);
   };
   useEffect(() => {
-    const fetchUserCollection = async () => {
-      const answer = await GETUSERCOLLECTIONS(user);
-      setUserCollection(answer);
-      console.log("User Collection:", answer);
-      console.log(answer.communities);
-      console.log("User Collection:", userCollection);
-      console.log("contract Name", userCollection.contractNames[0]);
-      console.log("communities", userCollection.communities[0]);
-      console.log("medias", userCollection.medias);
-    };
+     const fetchUserCollection = async () => {
+       const answer = await GETUSERCOLLECTIONS(user);
+       setUserCollection(answer);
+       console.log("User Collection:", answer);
+       console.log(answer.communities);
+       console.log("User Collection:", userCollection);
+       console.log("contract Name", userCollection.contractNames[0]);
+       console.log("communities", userCollection.communities[0]);
+       console.log("medias", userCollection.medias);
+     };
+    // const fetchUserCollection = async () => {
+    //   try {
+    //     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    //     const userAddress = accounts[0]; 
+
+    //     if (!userAddress) {
+    //       console.error('User address is not available');
+    //       return;
+    //     }
+
+    //     const userCollections = await GETUSERCOLLECTIONS(userAddress);
+
+    //     setUserCollection(answer);
+
+    //     console.log('User Collections:', userCollections);
+    //     // Handle userCollections.communities as needed
+
+    //   } catch (error) {
+    //     console.error('Error fetching user collection:', error);
+    //   }
+    // };
     // Fetch immediately on mount
     fetchUserCollection();
 
