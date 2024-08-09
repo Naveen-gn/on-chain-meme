@@ -442,7 +442,7 @@ export default function App() {
             {userCollection.contractNames.map((contractName, index) => (
               <div
                 key={index}
-                className="w-96 min-h-96 white-glassmorphism flex flex-col items-center justify-between p-4 shadow-lg"
+                className="w-96 h-[600px] white-glassmorphism flex flex-col items-center justify-between p-4 shadow-lg"
               >
                 <img
                   src={userCollection.medias[index]}
